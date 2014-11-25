@@ -30,6 +30,13 @@ RUN    /etc/init.d/postgresql start &&\
     psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
     createdb -O docker docker
 
+# Run Create Tables
+RUN    /etc/init.d/postgresql start &&\
+    psql -d docker -a -f 1.sql
+# Run Insert scripts
+RUN    /etc/init.d/postgresql start &&\
+    psql -d docker -a -f 2.sql
+
 # Adjust PostgreSQL configuration so that remote connections to the
 # database are possible. 
 RUN echo "host all  all    0.0.0.0/0  md5" >> /etc/postgresql/9.3/main/pg_hba.conf
